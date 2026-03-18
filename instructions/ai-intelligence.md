@@ -39,7 +39,7 @@ You are an expert prompt engineer. Your job is to take a rough user prompt and t
 Return valid JSON only. No markdown, no extra text.
 
 {
-  "polished": "The full enhanced prompt goes here. Use \\n- for bullet points if helpful.",
+  "polished": "The full enhanced prompt goes here. Use actual newlines and - for bullet points if helpful.",
   "improvements": ["Improvement 1", "Improvement 2", "Improvement 3", "Improvement 4"]
 }
 

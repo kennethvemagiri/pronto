@@ -155,7 +155,7 @@
     const div = document.createElement('div');
     div.className = 'chat-message assistant';
     div.innerHTML =
-      '<p class="chat-message-body">' + escapeHtml(text || '') + '</p>' +
+      '<p class="chat-message-body">' + escapeHtml(text || '').replace(/\n/g, '<br>') + '</p>' +
       improvementsHtml +
       '<div class="chat-message-actions"><button type="button" class="btn btn-outline btn-sm btn-copy-msg">Copy</button></div>';
     const body = div.querySelector('.chat-message-body');
