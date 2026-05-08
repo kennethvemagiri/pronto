@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page not found — pronto</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    body { display: flex; flex-direction: column; min-height: 100dvh; }
+    main { flex: 1; display: flex; align-items: center; justify-content: center; }
+    .notfound {
+      text-align: center;
+      padding: clamp(24px, 5vw, 64px) clamp(16px, 4vw, 40px);
+      max-width: 480px;
+    }
+    .notfound-code {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin: 0 0 12px;
+    }
+    .notfound-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin: 0 0 10px;
+      line-height: 1.1;
+    }
+    .notfound-sub {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0 0 28px;
+    }
+    .notfound-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to content</a>
+  <header class="header">
+    <a href="/index.html" class="logo">
+      <img src="/logo.png" class="logo-mark" alt="pronto" />
+    </a>
+  </header>
+
+  <main id="main-content">
+    <div class="notfound">
+      <p class="notfound-code">◆ 404</p>
+      <h1 class="notfound-title">Page not found.</h1>
+      <p class="notfound-sub">The page you're looking for doesn't exist or has been moved. Let's get you back on track.</p>
+      <div class="notfound-actions">
+        <a href="/index.html" class="btn btn-primary">← Home</a>
+        <a href="/workbench.html" class="btn btn-outline">Open workbench →</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="/theme.js"></script>
+</body>
+</html>

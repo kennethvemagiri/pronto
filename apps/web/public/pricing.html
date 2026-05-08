@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pricing — pronto</title>
+  <meta name="description" content="Simple, transparent pricing for pronto. Start free, upgrade when you need more." />
+  <link rel="canonical" href="https://pronto.online/pricing.html" />
+  <meta property="og:title" content="Pricing — pronto" />
+  <meta property="og:description" content="Simple, transparent pricing for pronto. Start free, upgrade when you need more." />
+  <meta property="og:url" content="https://pronto.online/pricing.html" />
+  <meta property="og:image" content="https://pronto.online/logo.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Pricing — pronto" />
+  <meta name="twitter:description" content="Simple, transparent pricing for pronto. Start free, upgrade when you need more." />
+  <meta name="twitter:image" content="https://pronto.online/logo.png" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    /* ── One-screen layout ── */
+    body { display: flex; flex-direction: column; min-height: 100dvh; }
+    main { flex: 1; display: flex; align-items: center; }
+
+    .pricing-section {
+      width: 100%;
+      padding: clamp(12px, 2.5vw, 28px) clamp(16px, 4vw, 40px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(14px, 2vw, 24px);
+    }
+
+    .pricing-header {
+      text-align: center;
+    }
+
+    .pricing-kicker {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin: 0 0 8px;
+    }
+
+    .pricing-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.25rem, 3vw, 1.8rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin: 0 0 6px;
+      line-height: 1.15;
+    }
+
+    .pricing-sub {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin: 0 auto;
+      max-width: 44ch;
+      line-height: 1.5;
+    }
+
+    /* ── Plans grid ── */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      width: 100%;
+      max-width: 860px;
+    }
+
+    .plan-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: clamp(14px, 2vw, 20px) clamp(14px, 2vw, 20px) clamp(12px, 1.5vw, 16px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(10px, 1.5vw, 14px);
+      position: relative;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .plan-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.08); }
+
+    .plan-card.is-featured {
+      border-color: var(--text);
+      border-width: 1.5px;
+    }
+
+    .plan-badge {
+      position: absolute;
+      top: -11px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--text);
+      color: var(--bg);
+      padding: 3px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .plan-top { display: flex; flex-direction: column; gap: 3px; }
+
+    .plan-name {
+      font-family: var(--font-head);
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .plan-desc {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .plan-price {
+      display: flex;
+      align-items: baseline;
+      gap: 3px;
+    }
+
+    .plan-price-amount {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 3.5vw, 2.1rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .plan-price-period {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .plan-divider { height: 1px; background: var(--border); margin: 0; }
+
+    .plan-features {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+    }
+
+    .plan-feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.78rem;
+      color: var(--text);
+      line-height: 1.35;
+    }
+
+    .plan-feature-icon {
+      font-size: 0.65rem;
+      color: var(--muted);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .plan-feature.is-muted { color: var(--muted); }
+
+    .plan-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-head);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--text);
+    }
+
+    .plan-cta:hover { background: var(--primary-soft); transform: translateY(-1px); }
+
+    .plan-cta.is-primary {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+    }
+
+    .plan-cta.is-primary:hover {
+      opacity: 0.88;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+    }
+
+    .pricing-note {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .pricing-note a {
+      color: var(--text);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    @media (max-width: 700px) {
+      main { align-items: flex-start; }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 360px; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to content</a>
+  <header class="header">
+    <a href="/index.html" class="logo">
+      <img src="/logo.png" class="logo-mark" alt="pronto" />
+    </a>
+  </header>
+
+  <main id="main-content">
+    <section class="pricing-section">
+
+      <div class="pricing-header">
+        <p class="pricing-kicker">◆ Simple pricing</p>
+        <h1 class="pricing-title">Start free.<br>Upgrade when you're ready.</h1>
+        <p class="pricing-sub">No hidden fees. Cancel anytime.</p>
+      </div>
+
+      <div class="pricing-grid">
+
+        <!-- Free -->
+        <div class="plan-card">
+          <div class="plan-top">
+            <p class="plan-name">Free</p>
+            <p class="plan-desc">Perfect for trying pronto out — no account needed.</p>
+          </div>
+          <div class="plan-price">
+            <span class="plan-price-amount">$0</span>
+            <span class="plan-price-period">/ forever</span>
+          </div>
+          <hr class="plan-divider" />
+          <ul class="plan-features">
+            <li class="plan-feature"><span class="plan-feature-icon">◆</span>20 polishes per hour</li>
+            <li class="plan-feature"><span class="plan-feature-icon">◆</span>All 5 tone modes</li>
+            <li class="plan-feature"><span class="plan-feature-icon">◆</span>Works with LLMs (ChatGPT, Claude, Gemini)</li>
+            <li class="plan-feature"><span class="plan-feature-icon">◆</span>No account required</li>
+            <li class="plan-feature is-muted"><span class="plan-feature-icon">·</span>Standard AI model</li>
+            <li class="plan-feature is-muted"><span class="plan-feature-icon">·</span>No history</li>
+          </ul>
+          <a href="/workbench.html" class="plan-cta">Open workbench →</a>
+        </div>
+
+        <!-- Pro (featured) -->
+        <div class="plan-card is-featured">
+          <span class="plan-badge">Most popular</span>
+          <div class="plan-top">
+            <p class="plan-name">Pro</p>
+            <p class="plan-desc">For professionals who rely on consistent AI output every day.</p>
+          </div>
+          <div class="plan-price">
+            <span class="plan-price-amount">$9.99</span>
+            <span class="plan-price-period">/ month</span>
+          </div>
+          <hr class="plan-divider" />
+          <ul class="plan-features">
+            <li class="plan-feature"><span class="plan-feature-icon">◆</span>Unlimited polishes</li>
+            <li class="plan-feature"><span class="plan-feature-icon">◆</span>All 5 tone modes</li>
+            <li class="plan-feature"><span class="plan-feature-icon">◆</span>Priority AI model (GPT-4o)</li>
+            <li class="plan-feature"><span class="plan-feature-icon">◆</span>Prompt history</li>
+            <li class="plan-feature"><span class="plan-feature-icon">◆</span>Works with any LLM</li>
+            <li class="plan-feature"><span class="plan-feature-icon">◆</span>Early access to new features</li>
+          </ul>
+          <a href="/contact.html" class="plan-cta is-primary">Get Pro →</a>
+        </div>
+
+        <!-- Team -->
+        <div class="plan-card">
+          <div class="plan-top">
+            <p class="plan-name">Team</p>
+            <p class="plan-desc">Standardise prompt quality across your whole team or workflow.</p>
+          </div>
+          <div class="plan-price">
+            <span class="plan-price-amount">$29.99</span>
+            <span class="plan-price-period">/ month</span>
+          </div>
+          <hr class="plan-divider" />
+          <ul class="plan-features">
+            <li class="plan-feature"><span class="plan-feature-icon">◆</span>Everything in Pro</li>
+            <li class="plan-feature"><span class="plan-feature-icon">◆</span>Up to 5 seats</li>
+            <li class="plan-feature"><span class="plan-feature-icon">◆</span>Shared prompt library</li>
+            <li class="plan-feature"><span class="plan-feature-icon">◆</span>API access</li>
+            <li class="plan-feature"><span class="plan-feature-icon">◆</span>Priority support</li>
+            <li class="plan-feature"><span class="plan-feature-icon">◆</span>Custom tone presets</li>
+          </ul>
+          <a href="/contact.html" class="plan-cta">Contact us →</a>
+        </div>
+
+      </div>
+
+      <p class="pricing-note">
+        All paid plans billed monthly · Cancel anytime · Questions?
+        <a href="/contact.html">Get in touch</a>
+      </p>
+
+    </section>
+  </main>
+
+  <script src="/theme.js"></script>
+</body>
+</html>

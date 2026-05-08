@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Workbench — pronto</title>
+  <meta name="description" content="Polish your prompts for ChatGPT, Claude, Gemini and more — in seconds." />
+  <link rel="canonical" href="https://pronto.online/workbench.html" />
+  <meta property="og:title" content="Workbench — pronto" />
+  <meta property="og:description" content="Polish your prompts for ChatGPT, Claude, Gemini and more — in seconds." />
+  <meta property="og:url" content="https://pronto.online/workbench.html" />
+  <meta property="og:image" content="https://pronto.online/logo.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Workbench — pronto" />
+  <meta name="twitter:description" content="Polish your prompts for ChatGPT, Claude, Gemini and more — in seconds." />
+  <meta name="twitter:image" content="https://pronto.online/logo.png" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body class="workbench-body">
+
+  <div class="wb-shell">
+
+    <!-- ── Main chat ── -->
+    <div class="wb-main">
+
+      <div class="wb-topbar">
+        <div class="wb-topbar-left">
+          <a class="wb-home" href="/index.html" aria-label="Home" title="Home">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M2.5 7.2 8 2.6l5.5 4.6V14a1 1 0 0 1-1 1H10V10H6v5H3.5a1 1 0 0 1-1-1V7.2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <span class="wb-title">/workbench</span>
+          <span class="wb-api-badge is-checking wb-api-badge--dot" id="wb-api-badge" aria-live="polite" title="Checking API…">
+            <span class="wb-api-dot" aria-hidden="true"></span>
+            <span class="wb-api-text sr-only">checking</span>
+          </span>
+        </div>
+        <span class="wb-ai-msg" id="wb-ai-msg">basic polish</span>
+        <select id="wb-mode-select" class="wb-mode-select" aria-label="Mode">
+          <option value="basic">Basic</option>
+          <option value="ai">AI</option>
+          <option value="concise">Concise</option>
+        </select>
+        <div class="wb-concise-toggle-wrap is-off" id="wb-concise-wrap">
+          <span class="wb-ai-dot" aria-hidden="true"></span>
+          <button type="button" class="wb-ai-toggle" id="wb-concise-toggle" aria-label="Concise mode off" aria-pressed="false">Concise</button>
+        </div>
+        <div class="wb-ai-toggle-wrap is-on" id="wb-ai-wrap">
+          <span class="wb-ai-dot" aria-hidden="true"></span>
+          <button type="button" class="wb-ai-toggle" id="wb-ai-toggle" aria-label="AI assist on" aria-pressed="true">AI</button>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div class="wb-messages" id="chat-messages">
+        <div class="wb-welcome" id="chat-welcome">
+          <h2 class="wb-welcome-title">Polish your prompts</h2>
+          <p class="wb-welcome-sub">
+            Paste a rough or messy prompt, pronto structures it into a clear,
+            effective prompt for LLM's.
+          </p>
+          <div class="wb-welcome-chips">
+            <button class="wb-chip" type="button">create a personal portfolio</button>
+            <button class="wb-chip" type="button">tell me about world war 2</button>
+            <button class="wb-chip" type="button">write me a blog post about marketing</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input card with tone pills built in -->
+      <div class="wb-input-bar">
+        <div class="wb-input-card">
+          <textarea
+            id="rough-prompt"
+            class="wb-textarea"
+            rows="1"
+            placeholder="Type your rough prompt…"
+          ></textarea>
+
+          <div class="wb-privacy-note" aria-live="polite">
+            <svg class="wb-privacy-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M8 1.6l5 2.2v4.1c0 3.1-2 5.8-5 6.9-3-1.1-5-3.8-5-6.9V3.8l5-2.2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+              <path d="M6.7 7.7l.9 1 1.9-2.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Your prompts are processed in real-time and are not stored, saved, or used for training.</span>
+          </div>
+
+          <!-- Optional context fields (audience + constraints) -->
+          <div class="wb-extras" id="wb-extras" aria-hidden="true">
+            <input type="text" id="target-audience" class="wb-extra-input"
+              placeholder="Target audience (e.g. beginners, senior devs…)" maxlength="120" />
+            <input type="text" id="constraints" class="wb-extra-input"
+              placeholder="Constraints (e.g. no bullet points, under 200 words…)" maxlength="200" />
+          </div>
+
+          <div class="wb-input-controls">
+            <!-- Tone pill buttons — hidden select stays in sync for app.js -->
+            <div class="wb-tone-pills" role="group" aria-label="Select tone">
+              <button class="wb-tone-pill is-active" data-tone=""            type="button">Default</button>
+              <button class="wb-tone-pill"            data-tone="professional" type="button">Professional</button>
+              <button class="wb-tone-pill"            data-tone="friendly"     type="button">Friendly</button>
+              <button class="wb-tone-pill"            data-tone="detailed"     type="button">Detailed</button>
+              <button class="wb-tone-pill"            data-tone="creative"     type="button">Creative</button>
+            </div>
+
+            <!-- Tone select (used by app.js; shown on mobile) -->
+            <select id="desired-tone" class="wb-tone-select" aria-label="Tone">
+              <option value="">Any tone</option>
+              <option value="professional">Professional</option>
+              <option value="friendly">Friendly</option>
+              <option value="detailed">Detailed</option>
+              <option value="creative">Creative</option>
+            </select>
+
+            <!-- Toggle extras panel -->
+            <button type="button" class="wb-extras-toggle" id="wb-extras-toggle"
+              aria-label="Add audience and constraints" aria-expanded="false" title="Set audience & constraints">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M2 3.5h12l-4.8 5.4v3.3l-2.4 1.2V8.9L2 3.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+            </button>
+
+            <button type="button" class="wb-clear-btn" id="wb-clear-btn" aria-label="Clear input and output" title="Clear">
+              Clear
+            </button>
+
+            <button type="button" class="wb-send-btn" id="polish-btn" aria-label="Polish prompt">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M8 13V3M3 8l5-5 5 5" stroke="currentColor" stroke-width="2.2"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <p class="wb-input-hint">Enter to send &nbsp;·&nbsp; Shift+Enter for a new line</p>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="/supabase-client.js"></script>
+  <script src="/app.js"></script>
+  <script src="/wb.js"></script>
+  <script src="/theme.js"></script>
+</body>
+</html>

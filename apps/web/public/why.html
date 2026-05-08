@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Why pronto? — pronto</title>
+  <meta name="description" content="Why pronto: clearer prompts, better outputs, less retry time." />
+  <link rel="canonical" href="https://pronto.online/why.html" />
+  <meta property="og:title" content="Why pronto? — pronto" />
+  <meta property="og:description" content="Why pronto: clearer prompts, better outputs, less retry time." />
+  <meta property="og:url" content="https://pronto.online/why.html" />
+  <meta property="og:image" content="https://pronto.online/logo.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Why pronto? — pronto" />
+  <meta name="twitter:description" content="Why pronto: clearer prompts, better outputs, less retry time." />
+  <meta name="twitter:image" content="https://pronto.online/logo.png" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    body { display: flex; flex-direction: column; min-height: 100dvh; overflow: hidden; }
+    main { flex: 1; display: flex; align-items: center; min-height: 0; }
+
+    .why-section {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 clamp(16px, 4vw, 40px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(12px, 2vw, 20px);
+    }
+
+    /* Hero */
+    .why-hero { text-align: center; }
+
+    .why-kicker {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 6px;
+    }
+
+    .why-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.2rem, 3vw, 1.75rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      line-height: 1.15;
+      margin: 0 0 8px;
+    }
+
+    .why-sub {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.55;
+      margin: 0 auto;
+      max-width: 52ch;
+    }
+
+    /* Main grid: before/after left, compat+cta right */
+    .why-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    /* Before / After stacked in left column */
+    .why-left {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .why-contrast-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      flex: 1;
+    }
+
+    .why-contrast-card.is-bad { opacity: 0.68; }
+
+    .why-contrast-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin: 0 0 8px;
+    }
+
+    .why-contrast-label.bad  { color: var(--muted); }
+    .why-contrast-label.good { color: var(--text); }
+
+    .why-contrast-item {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      font-size: 0.78rem;
+      line-height: 1.35;
+      margin-bottom: 5px;
+      color: var(--muted);
+    }
+
+    .why-contrast-item:last-child { margin-bottom: 0; }
+    .why-contrast-item.good { color: var(--text); }
+
+    .why-contrast-dot {
+      flex-shrink: 0;
+      margin-top: 4px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.45;
+    }
+
+    /* Right column: compat + CTA */
+    .why-right {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .why-compat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      text-align: center;
+    }
+
+    .why-compat-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+
+    .why-compat-pills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .why-compat-pill {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 3px 10px;
+    }
+
+    .why-cta {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      text-align: center;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .why-cta-title {
+      font-family: var(--font-head);
+      font-size: clamp(0.95rem, 2vw, 1.2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .why-cta-sub {
+      font-size: 0.76rem;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.5;
+      max-width: 32ch;
+    }
+
+    @media (max-width: 719px) {
+      body { overflow-y: auto; }
+      main { align-items: flex-start; }
+    }
+    @media (max-width: 640px) {
+      .why-body { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to content</a>
+  <header class="header">
+    <a href="/index.html" class="logo">
+      <img src="/logo.png" class="logo-mark" alt="pronto" />
+    </a>
+  </header>
+
+  <main id="main-content">
+    <section class="why-section">
+
+      <div class="why-hero">
+        <p class="why-kicker">◆ The problem with prompts</p>
+        <h1 class="why-title">Your output is only as good as your input.</h1>
+        <p class="why-sub">Most people type rough ideas and hope the AI figures it out. pronto structures that idea into a prompt that works — every time, across every model.</p>
+      </div>
+
+      <div class="why-body">
+
+        <!-- Left: Before / After -->
+        <div class="why-left">
+          <div class="why-contrast-card is-bad">
+            <p class="why-contrast-label bad">· Without pronto</p>
+            <div class="why-contrast-item"><span class="why-contrast-dot"></span>Vague, unstructured prompts</div>
+            <div class="why-contrast-item"><span class="why-contrast-dot"></span>Inconsistent outputs every run</div>
+            <div class="why-contrast-item"><span class="why-contrast-dot"></span>Multiple retries to get it right</div>
+            <div class="why-contrast-item"><span class="why-contrast-dot"></span>Wasted time rewriting</div>
+          </div>
+          <div class="why-contrast-card">
+            <p class="why-contrast-label good">◆ With pronto</p>
+            <div class="why-contrast-item good"><span class="why-contrast-dot"></span>Clear, structured prompts instantly</div>
+            <div class="why-contrast-item good"><span class="why-contrast-dot"></span>Consistent, reliable outputs</div>
+            <div class="why-contrast-item good"><span class="why-contrast-dot"></span>Right on the first try</div>
+            <div class="why-contrast-item good"><span class="why-contrast-dot"></span>More time for what matters</div>
+          </div>
+        </div>
+
+        <!-- Right: Compat + CTA -->
+        <div class="why-right">
+          <div class="why-compat">
+            <p class="why-compat-label">Works with every major model</p>
+            <div class="why-compat-pills">
+              <span class="why-compat-pill">ChatGPT</span>
+              <span class="why-compat-pill">Claude</span>
+              <span class="why-compat-pill">Gemini</span>
+              <span class="why-compat-pill">Midjourney</span>
+              <span class="why-compat-pill">Grok</span>
+              <span class="why-compat-pill">Llama</span>
+            </div>
+          </div>
+          <div class="why-cta">
+            <h2 class="why-cta-title">Try it in seconds.</h2>
+            <p class="why-cta-sub">Free, no account needed. Paste a rough idea and see the difference.</p>
+            <a href="/workbench.html" class="btn btn-primary">Open workbench →</a>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+  </main>
+
+  <script src="/theme.js"></script>
+</body>
+</html>

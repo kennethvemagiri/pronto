@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — pronto</title>
+  <meta name="description" content="Your prompt history and account overview." />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+
+    /* ── Layout ── */
+    body { display: flex; flex-direction: column; min-height: 100dvh; }
+    main { flex: 1; }
+
+    .dash-shell {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 0;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: clamp(20px, 3vw, 40px) clamp(16px, 4vw, 32px);
+      align-items: start;
+      gap: 24px;
+    }
+
+    /* ── Sidebar ── */
+    .dash-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: sticky;
+      top: 80px;
+    }
+
+    .dash-user-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .dash-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--text);
+      color: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      flex-shrink: 0;
+    }
+
+    .dash-user-name {
+      font-family: var(--font-head);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .dash-user-email {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .dash-plan-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-full, 999px);
+      padding: 3px 9px;
+      width: fit-content;
+    }
+
+    .dash-plan-badge.is-pro {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+    }
+
+    /* Usage bar */
+    .dash-usage {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .dash-usage-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .dash-usage-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .dash-usage-count {
+      font-family: var(--font-head);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .dash-bar-track {
+      height: 5px;
+      background: var(--bg);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .dash-bar-fill {
+      height: 100%;
+      background: var(--text);
+      border-radius: 999px;
+      transition: width 0.4s ease;
+    }
+
+    .dash-usage-sub {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .dash-upgrade-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 9px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--text);
+      background: var(--text);
+      color: var(--bg);
+      font-family: var(--font-head);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      text-decoration: none;
+      transition: opacity 0.15s ease;
+    }
+
+    .dash-upgrade-btn:hover { opacity: 0.85; }
+
+    /* Sidebar nav */
+    .dash-nav {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .dash-nav-link {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 9px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.15s ease, background 0.15s ease;
+    }
+
+    .dash-nav-link:hover,
+    .dash-nav-link.is-active {
+      color: var(--text);
+      background: var(--primary-soft);
+    }
+
+    .dash-nav-icon {
+      font-size: 0.85rem;
+      width: 18px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .dash-nav-link.is-danger { color: #dc2626; }
+    .dash-nav-link.is-danger:hover { background: rgba(220, 38, 38, 0.06); }
+
+    /* ── Main content ── */
+    .dash-main {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 0;
+    }
+
+    .dash-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .dash-section-title {
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .dash-section-meta {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+
+    /* Stats row */
+    .dash-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .dash-stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .dash-stat-value {
+      font-family: var(--font-head);
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .dash-stat-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* History list */
+    .dash-history {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .dash-history-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .dash-history-item:hover {
+      border-color: rgba(15, 23, 42, 0.16);
+      box-shadow: 0 3px 16px rgba(0, 0, 0, 0.05);
+    }
+
+    .dash-history-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .dash-history-date {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+
+    .dash-history-tag {
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: var(--bg);
+    }
+
+    .dash-history-tag.is-ai {
+      border-color: var(--text);
+      color: var(--text);
+    }
+
+    .dash-history-tag.is-caveman {
+      border-color: #f59e0b;
+      color: #b45309;
+    }
+
+    .dash-history-prompts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .dash-history-prompt {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .dash-history-prompt-label {
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .dash-history-prompt-text {
+      font-size: 0.8rem;
+      color: var(--text);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .dash-history-prompt.is-original .dash-history-prompt-text {
+      color: var(--muted);
+    }
+
+    .dash-history-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dash-copy-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      border-radius: var(--radius-xs);
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .dash-copy-btn:hover { border-color: var(--text); color: var(--text); }
+
+    .dash-reuse-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      border-radius: var(--radius-xs);
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .dash-reuse-btn:hover { border-color: var(--text); color: var(--text); }
+
+    /* Empty state */
+    .dash-empty {
+      background: var(--card);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-lg);
+      padding: 48px 24px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .dash-empty-icon {
+      font-family: var(--font-mono);
+      font-size: 1.8rem;
+      color: var(--muted);
+      opacity: 0.35;
+    }
+
+    .dash-empty-title {
+      font-family: var(--font-head);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .dash-empty-sub {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin: 0;
+      max-width: 280px;
+      line-height: 1.6;
+    }
+
+    .dash-empty-cta {
+      margin-top: 6px;
+      display: inline-flex;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      background: var(--text);
+      color: var(--bg);
+      font-family: var(--font-head);
+      font-size: 0.83rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.15s ease;
+    }
+
+    .dash-empty-cta:hover { opacity: 0.85; }
+
+    /* Coming soon overlay */
+    .dash-coming-soon {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .dash-coming-soon-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #f59e0b;
+      flex-shrink: 0;
+    }
+
+    .dash-coming-soon-text {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .dash-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .dash-sidebar {
+        position: static;
+      }
+
+      .dash-stats {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .dash-history-prompts {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .dash-stats {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to content</a>
+  <header class="header">
+    <a href="/index.html" class="logo">
+      <img src="/logo.png" class="logo-mark" alt="pronto" />
+    </a>
+  </header>
+
+  <main id="main-content">
+    <div class="dash-shell">
+
+      <!-- ── Sidebar ── -->
+      <aside class="dash-sidebar" aria-label="Account sidebar">
+
+        <!-- User card -->
+        <!-- TODO: populate from Supabase session (name, email, plan) -->
+        <div class="dash-user-card">
+          <div class="dash-avatar" aria-hidden="true" id="dash-avatar">KV</div>
+          <div>
+            <p class="dash-user-name" id="dash-name">Kenneth Vemagiri</p>
+            <p class="dash-user-email" id="dash-email">kenneth@example.com</p>
+          </div>
+          <span class="dash-plan-badge" id="dash-plan">◆ Free plan</span>
+        </div>
+
+        <!-- Usage -->
+        <!-- TODO: populate from DB — polishes used this billing cycle -->
+        <div class="dash-usage">
+          <div class="dash-usage-header">
+            <span class="dash-usage-label">This hour</span>
+            <span class="dash-usage-count" id="dash-usage-count">7 / 20</span>
+          </div>
+          <div class="dash-bar-track" role="progressbar" aria-valuenow="7" aria-valuemin="0" aria-valuemax="20" aria-label="7 of 20 free polishes used">
+            <div class="dash-bar-fill" id="dash-bar" style="width: 35%;"></div>
+          </div>
+          <p class="dash-usage-sub">Free plan: 20 polishes per hour. Resets every 60 min.</p>
+          <a href="/pricing.html" class="dash-upgrade-btn">Upgrade to Pro →</a>
+        </div>
+
+        <!-- Nav -->
+        <nav class="dash-nav" aria-label="Dashboard navigation">
+          <a href="/dashboard.html" class="dash-nav-link is-active">
+            <span class="dash-nav-icon" aria-hidden="true">◈</span> Dashboard
+          </a>
+          <a href="/workbench.html" class="dash-nav-link">
+            <span class="dash-nav-icon" aria-hidden="true">◆</span> Workbench
+          </a>
+          <a href="/pricing.html" class="dash-nav-link">
+            <span class="dash-nav-icon" aria-hidden="true">↑</span> Upgrade
+          </a>
+          <a href="/contact.html" class="dash-nav-link">
+            <span class="dash-nav-icon" aria-hidden="true">✉</span> Support
+          </a>
+          <a href="/login.html" class="dash-nav-link is-danger">
+            <span class="dash-nav-icon" aria-hidden="true">←</span> Sign out
+          </a>
+        </nav>
+
+      </aside>
+
+      <!-- ── Main ── -->
+      <div class="dash-main">
+
+
+        <!-- Stats -->
+        <div>
+          <div class="dash-section-header" style="margin-bottom: 12px;">
+            <h2 class="dash-section-title">Overview</h2>
+            <!-- TODO: replace with real dates from DB -->
+            <span class="dash-section-meta">All time</span>
+          </div>
+          <!-- TODO: fetch from DB aggregates -->
+          <div class="dash-stats">
+            <div class="dash-stat">
+              <span class="dash-stat-value" id="stat-total">24</span>
+              <span class="dash-stat-label">Polishes</span>
+            </div>
+            <div class="dash-stat">
+              <span class="dash-stat-value" id="stat-ai">18</span>
+              <span class="dash-stat-label">AI mode</span>
+            </div>
+            <div class="dash-stat">
+              <span class="dash-stat-value" id="stat-streak">3</span>
+              <span class="dash-stat-label">Day streak</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- History -->
+        <div>
+          <div class="dash-section-header" style="margin-bottom: 12px;">
+            <h2 class="dash-section-title">Prompt history</h2>
+            <!-- TODO: show real count from DB -->
+            <span class="dash-section-meta" id="history-count">4 saved</span>
+          </div>
+
+          <div class="dash-history" id="history-list">
+            <!-- populated by JS -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="/theme.js"></script>
+  <script src="/supabase-client.js"></script>
+  <script>
+    (function () {
+      function bindCopyButtons() {
+        document.querySelectorAll('.dash-copy-btn').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var text = btn.dataset.copy || '';
+            if (!text) return;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(text).then(function () {
+                var orig = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(function () { btn.textContent = orig; }, 1500);
+              });
+            }
+          });
+        });
+      }
+
+      function formatDate(isoString) {
+        var d = new Date(isoString);
+        var now = new Date();
+        var diff = now - d;
+        var oneDay = 86400000;
+        var timeStr = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+        if (diff < oneDay && now.getDate() === d.getDate()) return 'Today, ' + timeStr;
+        if (diff < 2 * oneDay) return 'Yesterday, ' + timeStr;
+        return d.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ', ' + timeStr;
+      }
+
+      function renderHistory(items) {
+        var list = document.getElementById('history-list');
+        var countEl = document.getElementById('history-count');
+        if (countEl) countEl.textContent = items.length + ' saved';
+
+        if (!items.length) {
+          list.innerHTML = '<div class="dash-empty"><div class="dash-empty-icon">◈</div><p class="dash-empty-title">No polishes yet</p><p class="dash-empty-sub">Head to the workbench and polish your first prompt.</p><a href="/workbench.html" class="dash-empty-cta">Open workbench →</a></div>';
+          return;
+        }
+
+        list.innerHTML = items.map(function (item) {
+          var modeTag = item.mode === 'ai'
+            ? '<span class="dash-history-tag is-ai">AI mode</span>'
+            : (item.mode === 'concise'
+              ? '<span class="dash-history-tag is-caveman">Concise</span>'
+              : '<span class="dash-history-tag">Basic</span>');
+          var polishedPreview = (item.polished || '').slice(0, 200);
+          var originalPreview = (item.original || '').slice(0, 200);
+          var copyVal = (item.polished || '').replace(/"/g, '&quot;');
+          return '<article class="dash-history-item">' +
+            '<div class="dash-history-meta">' +
+            '<time class="dash-history-date">' + formatDate(item.created_at) + '</time>' +
+            modeTag +
+            '</div>' +
+            '<div class="dash-history-prompts">' +
+            '<div class="dash-history-prompt is-original"><p class="dash-history-prompt-label">Original</p><p class="dash-history-prompt-text">' + escHtml(originalPreview) + '</p></div>' +
+            '<div class="dash-history-prompt"><p class="dash-history-prompt-label">Polished</p><p class="dash-history-prompt-text">' + escHtml(polishedPreview) + '</p></div>' +
+            '</div>' +
+            '<div class="dash-history-actions">' +
+            '<button type="button" class="dash-copy-btn" data-copy="' + escAttr(item.polished || '') + '">Copy polished</button>' +
+            '<a href="/workbench.html" class="dash-reuse-btn">Open in workbench →</a>' +
+            '</div></article>';
+        }).join('');
+        bindCopyButtons();
+      }
+
+      function escHtml(s) {
+        return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      }
+      function escAttr(s) {
+        return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+      }
+
+      function loadDashboard(session) {
+        if (!session) {
+          window.location.href = '/login.html';
+          return;
+        }
+        var user = session.user;
+
+        // User info
+        var name = (user.user_metadata && user.user_metadata.full_name) || user.email;
+        var initials = name.split(' ').map(function (w) { return w[0]; }).join('').slice(0, 2).toUpperCase();
+        var nameEl  = document.getElementById('dash-name');
+        var emailEl = document.getElementById('dash-email');
+        var avatarEl = document.getElementById('dash-avatar');
+        if (nameEl) nameEl.textContent = name;
+        if (emailEl) emailEl.textContent = user.email;
+        if (avatarEl) avatarEl.textContent = initials;
+
+        // Sign out
+        var signOutLink = document.querySelector('.dash-nav-link.is-danger');
+        if (signOutLink) {
+          signOutLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            window._supabase.auth.signOut().then(function () {
+              window.location.href = '/login.html';
+            });
+          });
+        }
+
+        // Load history from backend
+        fetch('/api/history', {
+          headers: { 'Authorization': 'Bearer ' + session.access_token },
+        })
+          .then(function (r) { return r.json(); })
+          .then(function (body) {
+            var items = body.history || [];
+            renderHistory(items);
+            // Stats
+            var totalEl = document.getElementById('stat-total');
+            var aiEl    = document.getElementById('stat-ai');
+            if (totalEl) totalEl.textContent = items.length;
+            if (aiEl)    aiEl.textContent = items.filter(function (i) { return i.mode === 'ai'; }).length;
+          })
+          .catch(function () {
+            renderHistory([]);
+          });
+      }
+
+      // Wait for Supabase to be ready
+      document.addEventListener('supabase:ready', function (e) {
+        loadDashboard(e.detail && e.detail.session);
+      });
+    })();
+  </script>
+</body>
+</html>
